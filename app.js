@@ -64,12 +64,16 @@ io.on('connection', socket => {
                 console.log('A client disconnected!')
                 //displays disconnect after login as well, why? can't access user after logged off
                 //    console.log(socket.username);
-                   const message =  "someone has disconnected";
-                   socket.broadcast.emit('newMessage', {
-                       message,
-                       time: 'now',
-                       from:'admin'
-                })
+
+
+                //    const message =  "someone has disconnected";
+                //    socket.broadcast.emit('newMessage', {
+                //        message,
+                //        time: 'now',
+                //        from:'admin'
+                // })
+
+                
                 //     function () {
                 //         var connectionMessage = //socket.username + " Disconnected from Socket ";
                 //         "Someone disconnected";

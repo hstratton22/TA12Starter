@@ -29,26 +29,17 @@ app.set('view engine', 'ejs')
 const server = app.listen(PORT, () => console.log(`Listening on ${PORT}`))
 
 const io = require('socket.io')(server)
+var users = [];
 io.on('connection', socket => {
     console.log('Client connected!')
 
     socket
-        .on('disconnect', () => {
-            console.log('A client disconnected!')
-            //     function () {
-            //         var connectionMessage = //socket.username + " Disconnected from Socket ";
-            //         "Someone disconnected";
-            //         console.log(connectionMessage);
-            // console.log('A client disconnected!')
-            // socket.broadcast.emit('newMessage', {
-            //     /** CONTENT for the emit **/
-            //     connectionMessage,
-                
-            //     from: 'admin'
-            // })
-        })
         .on('newUser', (username, time) => {
             // A new user logs in.
+            // users.push({
+            //     id: socket.id,
+            //     username: username
+            // });
             socket.username = username;
             const message = `${username} has logged on.`
             socket.broadcast.emit('newMessage', {
@@ -59,6 +50,39 @@ io.on('connection', socket => {
             })
 
         })
+        .on('disconnect',
+            () => {
+                // const presentUser = users.find(user => user.id == socket.id);
+                // console.log("present user", presentUser);
+                
+                // socket.broadcast.emit('newMessage', {
+                //            message: presentUser.username + " has disconnected",
+                //            time: 'now',
+                //            from:'admin'
+                //     })
+                //users = users.filter(user => user != presentUser);
+                console.log('A client disconnected!')
+                //displays disconnect after login as well, why? can't access user after logged off
+                //    console.log(socket.username);
+                   const message =  "someone has disconnected";
+                   socket.broadcast.emit('newMessage', {
+                       message,
+                       time: 'now',
+                       from:'admin'
+                })
+                //     function () {
+                //         var connectionMessage = //socket.username + " Disconnected from Socket ";
+                //         "Someone disconnected";
+                //         console.log(connectionMessage);
+                // console.log('A client disconnected!')
+                // socket.broadcast.emit('newMessage', {
+                //     /** CONTENT for the emit **/
+                //     connectionMessage,
+
+                //     from: 'admin'
+                // })
+            })
+
         .on('message', data => {
             // Receive a new message
             console.log('Message received')
